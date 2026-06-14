@@ -49,6 +49,8 @@
   .vid .th{height:110px;background:linear-gradient(135deg,var(--vio),var(--mag));display:flex;align-items:center;justify-content:center;font-size:30px;position:relative}
   .vid .th .play{position:absolute;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
   .vid .b{padding:10px 12px}.vid .b b{font-size:13px;display:block}.vid .b span{font-size:11px;color:var(--mut)}
+  .vid{cursor:pointer;transition:.15s}.vid:hover{transform:translateY(-2px);border-color:rgba(255,46,110,.4)}
+  .vidov{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:20px}.vidov video{max-height:90vh;max-width:100%;border-radius:14px;box-shadow:0 0 40px rgba(255,46,110,.4)}.vidov .x{position:absolute;top:18px;right:26px;font-size:28px;color:#fff;cursor:pointer}
 </style>
 </head>
 <body>
@@ -199,6 +201,12 @@
 
     <div class="panel"><h3>📹 Vídeos recentes</h3>
       <div class="vidgrid">
+        <div class="vid" onclick="playVid('identidade/batalha-danca-demo.mp4')"><div class="th" style="background:linear-gradient(135deg,#6a2bff,#ff2e6e)">🕺<div class="play">▶</div></div><div class="b"><b>Batalha de dança nos ônibus</b><span>publicado · 98k views ▶</span></div></div>
+        <div class="vid" style="opacity:.7"><div class="th" style="background:linear-gradient(135deg,#2bd576,#0a6)">⌚<div class="play">💡</div></div><div class="b"><b>Pulseira acendendo no drop</b><span>ideia · a gerar</span></div></div>
+        <div class="vid" style="opacity:.7"><div class="th" style="background:linear-gradient(135deg,#ff2e6e,#ff6a2b)">💜<div class="play">💡</div></div><div class="b"><b>Conheci no rolê (POV)</b><span>ideia · a gerar</span></div></div>
+        <div class="vid" style="opacity:.7"><div class="th" style="background:linear-gradient(135deg,#ffc23d,#ff6a2b)">🤩<div class="play">💡</div></div><div class="b"><b>Famoso surpresa no palco</b><span>ideia · a gerar</span></div></div>
+      </div>
+      <div class="note" style="display:none">
         <div class="vid"><div class="th">🤠<div class="play">▶</div></div><div class="b"><b>"Vem pro Barretos 🔥"</b><span>publicado · 84k views</span></div></div>
         <div class="vid"><div class="th" style="background:linear-gradient(135deg,#ff2e6e,#ffc23d)">🚌<div class="play">▶</div></div><div class="b"><b>Busão Balada por dentro</b><span>publicado · 47k views</span></div></div>
         <div class="vid"><div class="th" style="background:linear-gradient(135deg,#6a2bff,#ff2e6e)">⌚<div class="play">▶</div></div><div class="b"><b>Como funciona a pulseira</b><span>agendado · amanhã 18h</span></div></div>
@@ -234,6 +242,7 @@
 <script>
   function dtab(v){['op','mkt','map'].forEach(k=>document.getElementById('view-'+k).style.display=(k===v?'block':'none'));document.querySelectorAll('.dnav button').forEach(b=>b.classList.toggle('on',b.dataset.t===v))}
   function mktMode(m){document.getElementById('mm-auto').classList.toggle('on',m==='auto');document.getElementById('mm-eu').classList.toggle('on',m==='eu');document.getElementById('mkt-auto').style.display=m==='auto'?'block':'none';document.getElementById('mkt-eu').style.display=m==='eu'?'block':'none'}
+  function playVid(src){const ov=document.createElement('div');ov.className='vidov';ov.onclick=function(){ov.remove()};ov.innerHTML='<div class="x">✕</div><video src="'+src+'" controls autoplay playsinline></video>';document.body.appendChild(ov)}
   function gerarVideo(){const pipe=document.getElementById('pipe');pipe.classList.add('on');const steps=pipe.querySelectorAll('.step');steps.forEach(s=>s.classList.remove('on','done'));const old=document.getElementById('vidresult');if(old)old.innerHTML='';let i=0;function next(){if(i>0)steps[i-1].classList.replace('on','done');if(i<steps.length){steps[i].classList.add('on');i++;setTimeout(next,3000)}else{showDemoVideo(pipe)}}next()}
   function showDemoVideo(pipe){let r=document.getElementById('vidresult');if(!r){r=document.createElement('div');r.id='vidresult';pipe.parentElement.appendChild(r)}r.innerHTML='<div class="note" style="color:var(--ok);font-weight:700;margin:16px 0 10px">✅ Vídeo pronto e publicado!</div><img src="identidade/ProRole-logo-3.png" style="width:130px;display:block;margin:0 auto 10px"><video id="demovid" src="identidade/busao-video-demo.mp4" autoplay muted playsinline controls style="width:100%;max-width:300px;border-radius:14px;display:block;margin:0 auto;box-shadow:0 0 24px rgba(255,46,110,.4)"></video><div class="note" id="vidcap" style="text-align:center;margin-top:8px">🚌 Parte 1: a caminho do rolê...</div>';const v=document.getElementById("demovid");const seq=[{src:"identidade/batalha-danca-demo.mp4",cap:"🕺 Parte 2: batalha de dança entre os ônibus!"},{src:"identidade/barretos-video-demo.mp4",cap:"🤠 Parte 3: chegou no Barretos!"}];let k=0;v.onended=function(){if(k<seq.length){v.src=seq[k].src;v.load();document.getElementById("vidcap").textContent=seq[k].cap;k++;v.play().catch(function(){})}};v.play().catch(function(){})}
   function flash(btn,c){const n=document.getElementById('lightnote');n.textContent='⚡ Comando "'+c+'" enviado aos gateways — pulseiras acendendo...';btn.style.transform='scale(.95)';setTimeout(()=>btn.style.transform='',150)}
