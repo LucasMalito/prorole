@@ -222,7 +222,7 @@
   function closeSheet(){ov.classList.remove('show')}
 
   function openEventSwitch(){openSheet(`<h2 style="font-size:19px">Trocar de rolê</h2><p class="sub">Você só interage nos eventos que comprou.</p>`+events.map(e=>`<div class="lrow" onclick="${e.bought?`setEvent('${e.id}');closeSheet();toast('Agora no ${e.name}')`:`openBuy('${e.id}')`}"><div class="pic" style="background-image:url('${e.img}')"></div><div style="flex:1"><b>${e.name}</b><span>${e.date} · ${e.going} confirmadas</span></div>${e.bought?'<span class="badge bg-ok">✓</span>':'<span class="badge bg-lock">🔒</span>'}</div>`).join(''))}
-  function openBuy(id){const e=events.find(x=>x.id===id);openSheet(`<h2 style="font-size:19px">${e.name}</h2><p class="sub">${e.date} · ${e.going} confirmadas 🔒 você ainda não comprou</p><button class="btn wpp" onclick="window.open('https://wa.me/55XXXXXXXXXXX?text=Quero%20ir%20no%20${encodeURIComponent(e.name)}','_blank')">💬 Comprar pelo WhatsApp</button><button class="btn alt" style="margin-top:10px" onclick="openQuemVai('${id}')">👀 Ver quem vai (sem interagir)</button>`)}
+  function openBuy(id){const e=events.find(x=>x.id===id);openSheet(`<h2 style="font-size:19px">${e.name}</h2><p class="sub">${e.date} · ${e.going} confirmadas 🔒 você ainda não comprou</p><button class="btn wpp" onclick="window.open('https://wa.me/5511964807687?text=Quero%20ir%20no%20${encodeURIComponent(e.name)}','_blank')">💬 Comprar pelo WhatsApp</button><button class="btn alt" style="margin-top:10px" onclick="openQuemVai('${id}')">👀 Ver quem vai (sem interagir)</button>`)}
   function openCode(){openSheet(`<h2 style="font-size:19px">Liberar evento</h2><p class="sub">Comprou pelo WhatsApp? Coloque o <b>e-mail da sua conta</b> que a gente libera automático.</p><div class="field"><input id="codein" placeholder="seu@email.com"></div><button class="btn" onclick="useCode()">Liberar meu evento</button>`)}
   function useCode(){const v=document.getElementById('codein').value.trim();if(!v){toast('Coloca seu e-mail 🙂');return}const e=events.find(x=>!x.bought);if(e){e.bought=true;renderEvents();closeSheet();toast('✅ '+e.name+' liberado na sua conta!')}else{closeSheet();toast('Você já tem todos 😎')}}
 
@@ -243,13 +243,13 @@
     const init=(me.name&&me.name!=='Você')?me.name[0]:'L';
     const ov=document.createElement('div');ov.className='matchov';ov.onclick=()=>ov.remove();
     ov.innerHTML=`<div class="matchbox" onclick="event.stopPropagation()">
-      <div class="mtitle">É UM MATCH! 💜</div>
+      <div class="mtitle">Conectados! 💜</div>
       <div class="mpics">
         <div class="mpic" style="background:${myPic};background-size:cover;background-position:center">${me.photo?'':init}</div>
         <div class="mheart">💞</div>
         <div class="mpic" style="background-image:url('${w.photo}')"></div>
       </div>
-      <div class="mtxt">Você e <b>${w.name}</b> se conectaram${pct?` · <b>${pct}%</b> de match`:''}</div>
+      <div class="mtxt">Você se conectou com <b>${w.name}</b></div>
       <button class="btn" onclick="this.closest('.matchov').remove();openChat('${w.id}')">💬 Mandar mensagem</button>
       <button class="mclose" onclick="this.closest('.matchov').remove()">continuar no rolê</button>
     </div>`;
