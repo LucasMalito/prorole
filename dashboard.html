@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProRolê · Painel</title>
+<style>
+  :root{--bg:#120a0e;--card:#1f1418;--mag:#ff2e6e;--cy:#ffc23d;--vio:#ff6a2b;--txt:#fff4ef;--mut:#c2a79c;--ok:#2bd576;--bad:#ff5a5a}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
+  body{background:var(--bg);color:var(--txt);min-height:100vh}
+  .grad{background:linear-gradient(90deg,var(--mag),var(--vio),var(--cy));-webkit-background-clip:text;background-clip:text;color:transparent}
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(31,20,24,.6);position:sticky;top:0;backdrop-filter:blur(10px);z-index:10}
+  header .lg{font-size:22px;font-weight:800}header .lg small{font-size:13px;color:var(--mut);font-weight:400}
+  .evsel{background:var(--card);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:9px 14px;font-size:14px}
+  .live{display:inline-flex;align-items:center;gap:7px;color:var(--ok);font-size:13px;margin-left:14px}.live .d{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
+  .wrap{max-width:1200px;margin:0 auto;padding:26px}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:26px}
+  .kpi{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:18px}
+  .kpi small{color:var(--mut);font-size:12px}.kpi .v{font-size:28px;font-weight:800;margin-top:6px}.kpi .t{font-size:12px;color:var(--ok);margin-top:4px}
+  .cols{display:grid;grid-template-columns:1.3fr 1fr;gap:22px}
+  .panel{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:20px;margin-bottom:22px}
+  .panel h3{font-size:16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+  table{width:100%;border-collapse:collapse}th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.08)}
+  td{padding:11px 6px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.05)}
+  .pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px}.ok{background:rgba(43,213,118,.16);color:var(--ok)}.low{background:rgba(255,194,61,.16);color:var(--cy)}.out{background:rgba(255,90,90,.16);color:var(--bad)}
+  .bar{height:7px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:5px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--mag),var(--vio))}
+  .urow{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid rgba(255,255,255,.05)}
+  .urow .av{width:38px;height:38px;border-radius:50%;background-size:cover;background-position:center;flex-shrink:0}
+  .urow b{font-size:14px}.urow span{font-size:12px;color:var(--mut)}
+  .toggle{width:46px;height:26px;border-radius:99px;background:rgba(255,255,255,.15);position:relative;cursor:pointer;transition:.2s;flex-shrink:0}.toggle.on{background:var(--ok)}.toggle.lock{background:var(--mag);cursor:not-allowed}.toggle::after{content:"";position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.2s}.toggle.on::after,.toggle.lock::after{left:23px}
+  .lockbtn{font-size:11px;font-weight:700;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fff;border-radius:8px;padding:5px 9px;cursor:pointer;margin-left:8px}
+  .lightbtns{display:flex;gap:10px;flex-wrap:wrap}.lb{flex:1;min-width:90px;border:none;border-radius:12px;padding:14px;font-weight:700;color:#111;cursor:pointer}
+  .note{color:var(--mut);font-size:12px;margin-top:10px}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}}
+  .dnav{display:flex;gap:8px;padding:12px 28px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(31,20,24,.4)}
+  .dnav button{background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--mut);border-radius:10px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:14px}.dnav button.on{background:var(--mag);color:#fff;border-color:var(--mag)}
+  .map{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-areas:"onibus pista hotel" "bar pista piscina";gap:12px;margin-bottom:6px}
+  .zone{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;min-height:96px}.zone b{font-size:13px;display:block;margin-bottom:8px}
+  .ppl{display:flex;flex-wrap:wrap;gap:6px}.pp{width:32px;height:32px;border-radius:50%;background-size:cover;background-position:center;border:2px solid var(--mag)}
+  .sec{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--cy);font-weight:800;margin:34px 0 16px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .mkt-mode{display:flex;gap:10px;margin-bottom:14px}.mm{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--mut);border-radius:11px;padding:11px;font-weight:700;cursor:pointer}.mm.on{background:linear-gradient(90deg,var(--mag),var(--vio));color:#fff;border-color:transparent}
+  .mkt-ta{width:100%;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;font-family:inherit;resize:none;min-height:80px}
+  .btn-gen{width:100%;margin-top:12px;background:linear-gradient(90deg,var(--mag),var(--vio));color:#fff;border:none;border-radius:12px;padding:14px;font-weight:800;font-size:15px;cursor:pointer}.btn-gen:active{transform:scale(.99)}
+  .pipe{margin-top:18px;display:none}.pipe.on{display:block}
+  .step{display:flex;align-items:center;gap:12px;padding:11px 0;opacity:.35;transition:.3s}.step.on{opacity:1}.step.done{opacity:1}
+  .step .ic{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}.step.on .ic{background:linear-gradient(135deg,var(--mag),var(--vio));animation:bl 1s infinite}.step.done .ic{background:var(--ok)}
+  .step b{font-size:14px}.step span{font-size:12px;color:var(--mut);display:block}
+  .vidgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .vid{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden}
+  .vid .th{height:110px;background:linear-gradient(135deg,var(--vio),var(--mag));display:flex;align-items:center;justify-content:center;font-size:30px;position:relative}
+  .vid .th .play{position:absolute;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
+  .vid .b{padding:10px 12px}.vid .b b{font-size:13px;display:block}.vid .b span{font-size:11px;color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+  <div class="lg"><span class="grad">ProRolê</span> · Painel <small>operação</small><span class="live"><span class="d"></span>ao vivo</span></div>
+  <select class="evsel"><option>Anime Friends 2026 — hoje</option><option>Barretos 2026</option><option>CCXP 2026</option></select>
+</header>
+<div class="dnav"><button class="on" data-t="op" onclick="dtab('op')">📊 Operação</button><button data-t="mkt" onclick="dtab('mkt')">📣 Marketing</button><button data-t="map" onclick="dtab('map')">🗺️ Mapa & Clientes</button></div>
+<div class="wrap" id="view-op">
+  <div class="kpis">
+    <div class="kpi"><small>Vendas hoje</small><div class="v grad">R$ 8.430</div><div class="t">▲ 23% vs ontem</div></div>
+    <div class="kpi"><small>Cashless carregado</small><div class="v">R$ 14.200</div><div class="t" style="color:var(--cy)">R$ 3.110 ainda no saldo</div></div>
+    <div class="kpi"><small>Pessoas no evento</small><div class="v">312</div><div class="t">⌚ 298 pulseiras ativas</div></div>
+    <div class="kpi"><small>Doses (open bar)</small><div class="v">1.847</div><div class="t" style="color:var(--cy)">média 6,2/pessoa</div></div>
+    <div class="kpi"><small>Conexões feitas</small><div class="v">1.204</div><div class="t">💬 motor do app</div></div>
+  </div>
+
+  <div class="panel" style="background:linear-gradient(135deg,rgba(255,46,110,.14),rgba(255,194,61,.1));border-color:rgba(255,194,61,.35)">
+    <h3>🍺 Open bar inteligente — cada dose é bipada <span style="font-size:12px;color:var(--cy)">o ouro do negócio</span></h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:6px">
+      <div><small style="color:var(--mut);font-size:12px">Custo por pessoa</small><div class="v grad" style="font-size:30px;font-weight:800">R$ 31,40</div></div>
+      <div><small style="color:var(--mut);font-size:12px">Custo médio por dose</small><div class="v" style="font-size:30px;font-weight:800">R$ 5,31</div></div>
+      <div><small style="color:var(--mut);font-size:12px">Doses servidas</small><div class="v" style="font-size:30px;font-weight:800">1.847</div></div>
+    </div>
+    <div class="note">Toda bebida que sai é <b>bipada na pulseira</b> → o estoque baixa <b>automático</b> e a gente tem o <b>custo por pessoa em tempo real</b>. Num open bar isso é OURO: a gente sabe TODOS os números — quanto saiu, quanto custou e onde está vazando.</div>
+  </div>
+
+  <div class="sec">💰 Financeiro</div>
+  <div class="cols">
+    <div class="panel"><h3>💰 Resultado do evento <span style="font-size:12px;color:var(--mut)">tudo integrado</span></h3>
+      <table><tbody>
+        <tr><td>Receita pacotes (ingressos)</td><td style="text-align:right;color:var(--ok)">R$ 62.400</td></tr>
+        <tr><td>Receita loja + cashless</td><td style="text-align:right;color:var(--ok)">R$ 8.430</td></tr>
+        <tr><td>Patrocínio (Red Bull)</td><td style="text-align:right;color:var(--ok)">R$ 12.000</td></tr>
+        <tr><td>Custo transporte + hotel</td><td style="text-align:right;color:var(--bad)">- R$ 31.200</td></tr>
+        <tr><td>Custo bebida/open bar</td><td style="text-align:right;color:var(--bad)">- R$ 9.800</td></tr>
+        <tr><td>Comissão monitoras</td><td style="text-align:right;color:var(--bad)">- R$ 6.100</td></tr>
+        <tr><td><b>Lucro do evento</b></td><td style="text-align:right"><b class="grad">R$ 35.730</b></td></tr>
+        <tr><td>Margem</td><td style="text-align:right"><span class="pill ok">42%</span></td></tr>
+      </tbody></table>
+      <div class="note">💡 Lucro 100% reinvestido em marketing (regra do Lucas).</div>
+    </div>
+
+    <div class="panel"><h3>📈 Projeção de lucro <span style="font-size:12px;color:var(--mut)">é só multiplicar</span></h3>
+      <table><tbody>
+        <tr><td>Ônibus a 50%</td><td style="text-align:right">~R$ 14.000</td></tr>
+        <tr><td>Ônibus a 75%</td><td style="text-align:right">~R$ 25.000</td></tr>
+        <tr><td><b>Ônibus lotado (100%)</b></td><td style="text-align:right"><b class="grad">R$ 35.730</b></td></tr>
+        <tr><td>2 ônibus lotados</td><td style="text-align:right">~R$ 71.000</td></tr>
+        <tr><td>1 evento por mês</td><td style="text-align:right"><b class="grad">~R$ 430k / ano</b></td></tr>
+      </tbody></table>
+      <div class="note">📌 Cada ônibus a mais ≈ R$ 35 mil de lucro. A máquina escala multiplicando saídas.</div>
+    </div>
+  </div>
+
+  <div class="sec">📊 Operação</div>
+  <div class="cols">
+    <div>
+      <div class="panel"><h3>📦 Estoque — itens & open bar <span style="font-size:12px;color:var(--mut)">conectado ao app em tempo real</span></h3>
+        <table><thead><tr><th>Item</th><th>Vendidos</th><th>Estoque</th><th>Status</th></tr></thead><tbody>
+          <tr><td>Gin Premium</td><td>92</td><td>0</td><td><span class="pill out">esgotado</span></td></tr>
+          <tr><td>Energético</td><td>140</td><td>80</td><td><span class="pill ok">ok</span></td></tr>
+          <tr><td>YoPro Proteico</td><td>61</td><td>9</td><td><span class="pill low">acabando</span></td></tr>
+          <tr><td>Vodka (open bar)</td><td>—</td><td>42 L</td><td><span class="pill ok">ok</span></td></tr>
+          <tr><td>Xarope/limão</td><td>—</td><td>8 L</td><td><span class="pill low">repor</span></td></tr>
+          <tr><td>Pelúcia ❤️</td><td>7</td><td>5</td><td><span class="pill ok">ok</span></td></tr>
+          <tr><td>Kit anti-ressaca</td><td>18</td><td>32</td><td><span class="pill ok">ok</span></td></tr>
+        </tbody></table>
+        <div class="note">🔴 Quando zera, o item aparece "esgotado" no app automaticamente (Gin já sumiu da loja).</div>
+        <div class="note" style="color:var(--bad)">🔔 Reposição automática: <b>Gin Premium esgotado</b> → pedido sugerido ao fornecedor · Xarope/limão abaixo do mínimo.</div>
+      </div>
+      <div class="panel"><h3>🏆 Top produtos hoje</h3>
+        <table><tbody>
+          <tr><td>1 · Energético</td><td style="text-align:right">R$ 2.100</td></tr>
+          <tr><td>2 · Gin Premium</td><td style="text-align:right">R$ 2.576</td></tr>
+          <tr><td>3 · YoPro</td><td style="text-align:right">R$ 854</td></tr>
+          <tr><td>4 · Pelúcia ❤️</td><td style="text-align:right">R$ 245</td></tr>
+        </tbody></table>
+      </div>
+      <div class="panel"><h3>💡 Luz da pista (rádio)</h3>
+        <div class="lightbtns">
+          <button class="lb" style="background:var(--mag)" onclick="flash(this,'rosa')">Drop 🔥</button>
+          <button class="lb" style="background:var(--ok)" onclick="flash(this,'verde')">Verde</button>
+          <button class="lb" style="background:var(--cy)" onclick="flash(this,'âmbar')">Onda</button>
+          <button class="lb" style="background:#fff" onclick="flash(this,'todas')">Tudo</button>
+        </div>
+        <div class="note" id="lightnote">Comando vai pros gateways (ônibus / hotel / festa) e acende as pulseiras.</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel"><h3>⌚ Consumo por pulseira <span style="font-size:12px;color:var(--mut)">anti-excesso</span></h3>
+        <div class="urow"><div class="av" style="background-image:url('identidade/perfis/w2.png')"></div><div style="flex:1"><b>Duda · #A1F9</b><span>última zona: bar 2 · 23h41</span><div class="bar"><i style="width:85%;background:var(--bad)"></i></div></div><span style="color:var(--bad);font-size:12px">9 doses ⚠️</span></div>
+        <div class="urow"><div class="av" style="background-image:url('identidade/avatars/bia.png')"></div><div style="flex:1"><b>Bia · #B7K2</b><span>última zona: pista · 23h38</span><div class="bar"><i style="width:45%"></i></div></div><span style="font-size:12px;color:var(--mut)">5 doses</span></div>
+        <div class="urow"><div class="av" style="background-image:url('identidade/perfis/w4.png')"></div><div style="flex:1"><b>Yuna · #C3M8</b><span>última zona: piscina · 23h30</span><div class="bar"><i style="width:20%"></i></div></div><span style="font-size:12px;color:var(--mut)">2 doses</span></div>
+        <div class="note">⚠️ A monitora recebe alerta quando passa do limite (cuidado, não punição).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">👥 Pessoas</div>
+  <div class="cols">
+    <div class="panel"><h3>👥 RH / Monitoras <span style="font-size:12px;color:var(--mut)">ganham por mulher que trazem</span></h3>
+      <table><thead><tr><th>Monitora</th><th>Mulheres</th><th>Status</th><th>A pagar</th></tr></thead><tbody>
+        <tr><td>Camila</td><td>34</td><td><span class="pill ok">ativa</span></td><td>R$ 1.700</td></tr>
+        <tr><td>Bruna</td><td>21</td><td><span class="pill ok">ativa</span></td><td>R$ 1.050</td></tr>
+        <tr><td>Tati</td><td>18</td><td><span class="pill low">no ônibus</span></td><td>R$ 900</td></tr>
+        <tr><td>Le</td><td>9</td><td><span class="pill ok">ativa</span></td><td>R$ 450</td></tr>
+      </tbody></table>
+      <div class="note">Cada monitora só ganha pelas <b>mulheres</b> confirmadas que ela trouxe (rastreado pelo link/indicação).</div>
+    </div>
+
+    <div class="panel"><h3>👨‍👩‍👧 Modo responsável (controle)</h3>
+      <p class="note" style="margin:0 0 12px">Se um pai exigir, você FORÇA o modo no menor e <b>bloqueia</b> pra ele não conseguir desligar.</p>
+      <div class="urow"><div class="av" style="background-image:url('identidade/perfis/w8.png')"></div><div style="flex:1"><b>Sakura, 18</b><span id="s-saka">responsável: opcional</span></div><div class="toggle" id="t-saka" onclick="tog('saka')"></div><button class="lockbtn" onclick="lock('saka')">🔒 Forçar</button></div>
+      <div class="urow"><div class="av" style="background-image:url('identidade/perfis/w4.png')"></div><div style="flex:1"><b>Yuna, 18</b><span id="s-yuna">responsável: FORÇADO 🔒</span></div><div class="toggle lock" id="t-yuna"></div><button class="lockbtn" onclick="unlock('yuna')">Liberar</button></div>
+      <div class="note">No app dele o botão fica travado em ON — não desliga.</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="view-mkt" style="display:none">
+  <div class="sec">📣 Marketing — fábrica de conteúdo automática</div>
+  <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi"><small>Vídeos no mês</small><div class="v grad">28</div><div class="t">▲ 12 essa semana</div></div>
+    <div class="kpi"><small>Alcance</small><div class="v">1,2M</div><div class="t">Insta + TikTok</div></div>
+    <div class="kpi"><small>Custo por vídeo</small><div class="v">R$ 0,40</div><div class="t" style="color:var(--cy)">a IA faz sozinha</div></div>
+    <div class="kpi"><small>Leads p/ WhatsApp</small><div class="v">340</div><div class="t">💬 viram venda</div></div>
+  </div>
+
+  <div class="cols">
+    <div class="panel"><h3>🎬 Criar vídeo novo</h3>
+      <div class="mkt-mode">
+        <button class="mm on" id="mm-auto" onclick="mktMode('auto')">🤖 Automático</button>
+        <button class="mm" id="mm-eu" onclick="mktMode('eu')">✍️ Eu escrevo</button>
+      </div>
+      <div id="mkt-auto"><p class="note" style="margin-bottom:4px">A IA acha a <b>trend do dia</b>, escreve o roteiro, gera o vídeo com a cara do ProRolê e <b>publica sozinha</b> — todo dia, sem ninguém mexer.</p></div>
+      <div id="mkt-eu" style="display:none"><textarea class="mkt-ta" placeholder="Escreve mais ou menos o que você quer... Ex: vídeo chamando a galera pro Barretos, mostrando o busão com LED e o open bar, com um gancho forte no 1º segundo"></textarea></div>
+      <button class="btn-gen" onclick="gerarVideo()">⚡ Gerar vídeo</button>
+      <div class="pipe" id="pipe">
+        <div class="step" data-s="0"><div class="ic">🔎</div><div><b>Pesquisando a trend do dia</b><span>áudio em alta + formato que viraliza</span></div></div>
+        <div class="step" data-s="1"><div class="ic">✍️</div><div><b>Escrevendo o roteiro</b><span>gancho no 1º segundo + CTA pro WhatsApp</span></div></div>
+        <div class="step" data-s="2"><div class="ic">🎨</div><div><b>Gerando as cenas</b><span>imagens/clipes na identidade ProRolê</span></div></div>
+        <div class="step" data-s="3"><div class="ic">🎞️</div><div><b>Montando vídeo + trilha</b><span>corte, legenda e música</span></div></div>
+        <div class="step" data-s="4"><div class="ic">🚀</div><div><b>Publicando</b><span>Instagram + TikTok + Reels</span></div></div>
+      </div>
+    </div>
+
+    <div class="panel"><h3>📹 Vídeos recentes</h3>
+      <div class="vidgrid">
+        <div class="vid"><div class="th">🤠<div class="play">▶</div></div><div class="b"><b>"Vem pro Barretos 🔥"</b><span>publicado · 84k views</span></div></div>
+        <div class="vid"><div class="th" style="background:linear-gradient(135deg,#ff2e6e,#ffc23d)">🚌<div class="play">▶</div></div><div class="b"><b>Busão Balada por dentro</b><span>publicado · 47k views</span></div></div>
+        <div class="vid"><div class="th" style="background:linear-gradient(135deg,#6a2bff,#ff2e6e)">⌚<div class="play">▶</div></div><div class="b"><b>Como funciona a pulseira</b><span>agendado · amanhã 18h</span></div></div>
+        <div class="vid"><div class="th" style="background:linear-gradient(135deg,#ff6a2b,#ffc23d)">💜<div class="play">▶</div></div><div class="b"><b>Match no rolê (POV)</b><span>publicado · 122k views</span></div></div>
+      </div>
+      <div class="note">A IA reaproveita o conteúdo que dá certo e refaz variações sozinha.</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="view-map" style="display:none">
+  <div class="panel"><h3>🗺️ Mapa ao vivo — onde está cada um <span style="font-size:12px;color:var(--mut)">por zona (pulseira)</span></h3>
+    <div class="map">
+      <div class="zone" style="grid-area:onibus"><b>🚌 Ônibus (1)</b><div class="ppl"><span class="pp" style="background-image:url('identidade/perfis/w2.png')"></span></div></div>
+      <div class="zone" style="grid-area:pista"><b>🔥 Pista (3)</b><div class="ppl"><span class="pp" style="background-image:url('identidade/avatars/bia.png')"></span><span class="pp" style="background-image:url('identidade/perfis/w5.png')"></span><span class="pp" style="background-image:url('identidade/perfis/w7.png')"></span></div></div>
+      <div class="zone" style="grid-area:hotel"><b>🏨 Hotel (2)</b><div class="ppl"><span class="pp" style="background-image:url('identidade/avatars/mariana.png')"></span><span class="pp" style="background-image:url('identidade/perfis/w1.png')"></span></div></div>
+      <div class="zone" style="grid-area:bar"><b>🍹 Bar (1)</b><div class="ppl"><span class="pp" style="background-image:url('identidade/perfis/w3.png')"></span></div></div>
+      <div class="zone" style="grid-area:piscina"><b>🌊 Piscina (2)</b><div class="ppl"><span class="pp" style="background-image:url('identidade/perfis/w4.png')"></span><span class="pp" style="background-image:url('identidade/perfis/w6.png')"></span></div></div>
+    </div>
+    <div class="note">Cada ponto = 1 pulseira (ID único). A posição vem do leitor onde a pessoa bipou por último (não é GPS no pulso).</div>
+  </div>
+  <div class="panel"><h3>👤 Clientes <span style="font-size:12px;color:var(--mut)">dados em tempo real</span></h3>
+    <table><thead><tr><th>Cliente</th><th>Pulseira</th><th>Zona</th><th>Saldo</th><th>Doses</th><th>Conex.</th><th>Responsável</th></tr></thead><tbody>
+      <tr><td>Bia</td><td>#B7K2</td><td>Pista</td><td>R$ 40</td><td>5</td><td>12</td><td><span class="pill ok">off</span></td></tr>
+      <tr><td>Duda</td><td>#A1F9</td><td>Bar</td><td>R$ 8</td><td>9 ⚠️</td><td>16</td><td><span class="pill ok">off</span></td></tr>
+      <tr><td>Sakura</td><td>#D4P1</td><td>Hotel</td><td>R$ 65</td><td>2</td><td>7</td><td><span class="pill out">FORÇADO 🔒</span></td></tr>
+      <tr><td>Yuna</td><td>#C3M8</td><td>Piscina</td><td>R$ 22</td><td>2</td><td>9</td><td><span class="pill out">FORÇADO 🔒</span></td></tr>
+      <tr><td>Larissa</td><td>#E9T3</td><td>Hotel</td><td>R$ 110</td><td>4</td><td>13</td><td><span class="pill ok">off</span></td></tr>
+    </tbody></table>
+    <div class="note">Clica numa pessoa pra ver perfil completo, histórico de consumo e conexões (versão final).</div>
+  </div>
+</div>
+<script>
+  function dtab(v){['op','mkt','map'].forEach(k=>document.getElementById('view-'+k).style.display=(k===v?'block':'none'));document.querySelectorAll('.dnav button').forEach(b=>b.classList.toggle('on',b.dataset.t===v))}
+  function mktMode(m){document.getElementById('mm-auto').classList.toggle('on',m==='auto');document.getElementById('mm-eu').classList.toggle('on',m==='eu');document.getElementById('mkt-auto').style.display=m==='auto'?'block':'none';document.getElementById('mkt-eu').style.display=m==='eu'?'block':'none'}
+  function gerarVideo(){const pipe=document.getElementById('pipe');pipe.classList.add('on');const steps=pipe.querySelectorAll('.step');steps.forEach(s=>s.classList.remove('on','done'));let i=0;function next(){if(i>0)steps[i-1].classList.replace('on','done');if(i<steps.length){steps[i].classList.add('on');i++;setTimeout(next,1100)}else{const last=steps[steps.length-1];last.classList.remove('on');last.classList.add('done');}}next()}
+  function flash(btn,c){const n=document.getElementById('lightnote');n.textContent='⚡ Comando "'+c+'" enviado aos gateways — pulseiras acendendo...';btn.style.transform='scale(.95)';setTimeout(()=>btn.style.transform='',150)}
+  function tog(id){const t=document.getElementById('t-'+id);if(t.classList.contains('lock'))return;t.classList.toggle('on');document.getElementById('s-'+id).textContent='responsável: '+(t.classList.contains('on')?'ligado':'opcional')}
+  function lock(id){const t=document.getElementById('t-'+id);t.classList.remove('on');t.classList.add('lock');document.getElementById('s-'+id).textContent='responsável: FORÇADO 🔒';}
+  function unlock(id){const t=document.getElementById('t-'+id);t.classList.remove('lock');document.getElementById('s-'+id).textContent='responsável: opcional';}
+</script>
+</body>
+</html>

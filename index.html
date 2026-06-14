@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#120a0e">
+<title>ProRolê</title>
+<style>
+  :root{--bg:#120a0e;--card:#1f1418;--mag:#ff2e6e;--cy:#ffc23d;--vio:#ff6a2b;--txt:#fff4ef;--mut:#c2a79c;--wpp:#25d366;--ok:#2bd576}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}body{background:#000;color:var(--txt);display:flex;justify-content:center}
+  .phone{width:100%;max-width:430px;height:100vh;max-height:932px;background:var(--bg);position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(255,106,43,.25)}
+  .grad{background:linear-gradient(90deg,var(--mag),var(--vio),var(--cy));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #login{position:absolute;inset:0;z-index:90;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px;text-align:center;background:radial-gradient(700px 400px at 70% 0%,rgba(255,106,43,.35),transparent 60%),radial-gradient(700px 400px at 10% 100%,rgba(255,46,110,.25),transparent 60%),var(--bg)}
+  #login .lg{font-size:46px;font-weight:800}#login .tl{font-size:17px;margin:8px 0 4px}#login .ds{color:var(--mut);font-size:13px;margin-bottom:40px}
+  #login .lbtn{width:100%;max-width:320px;padding:14px;border-radius:13px;border:none;font-weight:700;font-size:15px;margin-bottom:12px;cursor:pointer}
+  .lb-main{background:linear-gradient(90deg,var(--mag),var(--vio));color:#fff}.lb-alt{background:#fff;color:#111}.lb-gh{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18)!important}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;flex-shrink:0}.top .brand{font-weight:800;font-size:20px}
+  .top .me{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--mag),var(--vio));background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:14px}
+  .screen{flex:1;overflow-y:auto;padding:4px 16px 92px}.screen::-webkit-scrollbar{display:none}
+  .view{display:none}.view.on{display:block;animation:f .25s}@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2{font-size:23px;letter-spacing:-.5px;margin:8px 0 4px}
+  .titlebtn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;max-width:100%}.titlebtn .ar{font-size:13px;color:var(--mut);background:rgba(255,255,255,.08);border-radius:8px;padding:2px 7px}
+  .sub{color:var(--mut);font-size:13px;margin-bottom:14px}
+  .kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cy);margin:18px 0 10px;display:flex;justify-content:space-between;align-items:center}.kick .lnk{color:var(--mag);letter-spacing:0;text-transform:none;cursor:pointer;font-size:12px}
+  .ev{border-radius:20px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(255,255,255,.08)}
+  .ev .img{height:150px;display:flex;align-items:flex-end;padding:14px;font-weight:800;font-size:20px;text-shadow:0 2px 14px #000;background-size:cover;background-position:center;position:relative}
+  .ev .img::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,rgba(0,0,0,.7))}.ev .img span{position:relative;z-index:1}
+  .ev .body{background:var(--card);padding:14px}.ev .meta{display:flex;justify-content:space-between;align-items:center;color:var(--mut);font-size:13px;margin-bottom:12px}
+  .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px}.bg-ok{background:rgba(43,213,118,.18);color:var(--ok)}.bg-lock{background:rgba(255,255,255,.08);color:var(--mut)}.bg-out{background:rgba(255,80,80,.18);color:#ff8080}
+  .btn{display:block;width:100%;text-align:center;background:linear-gradient(90deg,var(--mag),var(--vio));color:#fff;font-weight:700;padding:13px;border-radius:13px;border:none;font-size:15px;cursor:pointer}
+  .btn.alt{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13)}.btn.danger{background:linear-gradient(90deg,#ff3b3b,#ff7a18)}.btn.wpp{background:var(--wpp);color:#04210f}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.4}
+  .conf{display:flex;gap:14px;overflow-x:auto;padding:4px 0 10px}.conf::-webkit-scrollbar{display:none}
+  .person{flex-shrink:0;width:62px;text-align:center;cursor:pointer}.person .pic{width:62px;height:62px;border-radius:50%;margin-bottom:5px;border:2px solid rgba(255,255,255,.15);background-size:cover;background-position:center}.person small{font-size:11px;color:var(--mut)}
+  .seg{display:flex;background:var(--card);border-radius:12px;padding:4px;margin-bottom:14px}.seg div{flex:1;text-align:center;padding:9px;border-radius:9px;font-size:13px;font-weight:600;color:var(--mut);cursor:pointer}.seg div.on{background:var(--vio);color:#fff}
+  .post{background:var(--card);border-radius:18px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(255,255,255,.06)}
+  .post .h{display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer}.post .h .pic{width:36px;height:36px;border-radius:50%;background-size:cover;background-position:center}.post .h b{font-size:14px}.post .h span{font-size:11px;color:var(--mut);display:block}
+  .post .cap{padding:0 14px 10px;font-size:14px}.post .photo{height:300px;background-size:cover;background-position:center}
+  .post .acts{display:flex;gap:18px;padding:11px 14px;font-size:14px;color:var(--mut)}.post .acts .a{cursor:pointer;display:flex;gap:6px;align-items:center}
+  .fab{position:absolute;right:18px;bottom:88px;background:linear-gradient(90deg,var(--mag),var(--vio));color:#fff;border:none;width:54px;height:54px;border-radius:50%;font-size:26px;cursor:pointer;box-shadow:0 10px 26px rgba(255,46,110,.45);z-index:30}
+  .tap{margin:14px auto;width:190px;height:190px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:radial-gradient(circle at 50% 40%,rgba(255,46,110,.35),rgba(255,194,61,.12) 70%,transparent);border:2px solid rgba(255,46,110,.5);text-align:center;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,46,110,.4)}50%{box-shadow:0 0 0 22px rgba(255,46,110,0)}}
+  .tap .em{font-size:44px}.tap b{margin-top:6px;font-size:15px}.tap small{color:var(--mut);font-size:12px;padding:0 20px;margin-top:4px}
+  .stat-row{display:flex;gap:12px;margin:14px 0}.stat{flex:1;background:var(--card);border-radius:15px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,.06);cursor:pointer}.stat b{display:block;font-size:24px}.stat small{color:var(--mut);font-size:11px}
+  .mission{background:linear-gradient(135deg,rgba(255,106,43,.22),rgba(255,194,61,.12));border:1px solid rgba(255,106,43,.4);border-radius:16px;padding:15px;margin-top:14px}.mission b{font-size:14px}.mission p{color:var(--mut);font-size:12.5px;margin-top:4px}
+  .balance{background:linear-gradient(135deg,#3a1410,#5a2410);border:1px solid rgba(255,46,110,.3);border-radius:20px;padding:22px;margin-bottom:16px}.balance small{color:var(--mut);font-size:12px}.balance .v{font-size:38px;font-weight:800;margin:4px 0}.balance .chip{font-size:12px;color:var(--cy)}
+  .infocard{background:var(--card);border-radius:14px;padding:14px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;cursor:pointer}.infocard b{font-size:14px}.infocard span{font-size:12px;color:var(--mut)}
+  .store-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .prod{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.06);position:relative}.prod img{width:100%;aspect-ratio:1;object-fit:cover}.prod.out img{filter:grayscale(.8) brightness(.6)}.prod .pb3{padding:10px 11px}.prod b{font-size:13.5px;display:block}.prod span{font-size:11px;color:var(--mut);display:block;margin:2px 0 8px;min-height:14px}
+  .prod .buy{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:8px;font-size:13px;font-weight:700;cursor:pointer}.prod .buy .pr{color:var(--cy)}.prod .out-tag{position:absolute;top:8px;left:8px}
+  .myitem{display:flex;gap:12px;background:var(--card);border-radius:14px;padding:11px;margin-bottom:10px;border:1px solid rgba(255,255,255,.06);align-items:center}.myitem img{width:50px;height:50px;border-radius:11px;object-fit:cover}.myitem .t{flex:1}.myitem .t b{font-size:13.5px}.myitem .t span{font-size:11px;color:var(--mut);display:block}
+  .mini{font-size:11px;font-weight:700;padding:6px 9px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;margin-left:6px}
+  .dj-now{background:linear-gradient(135deg,#5a2410,#3a1410);border:1px solid rgba(255,194,61,.3);border-radius:18px;padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px}.dj-now .disc{width:50px;height:50px;border-radius:50%;background:conic-gradient(var(--mag),var(--cy),var(--vio),var(--mag));animation:spin 3s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  .qrow{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:12px;padding:11px 13px;margin-bottom:9px}.qrow .n{width:22px;color:var(--mut);font-weight:700;font-size:13px}.qrow b{font-size:13.5px}.qrow span{font-size:11px;color:var(--mut);display:block}
+  .field{margin-bottom:14px}.field label{font-size:12px;color:var(--mut);display:block;margin-bottom:6px}.field input,.field textarea{width:100%;background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:11px 14px;color:#fff;font-size:14px;outline:none;font-family:inherit}
+  .tags{display:flex;flex-wrap:wrap;gap:7px}.tag{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:5px 12px;font-size:12px;cursor:pointer}.tag.sel{background:var(--mag);border-color:var(--mag);color:#fff}
+  .q{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;border:1px solid rgba(255,255,255,.06)}.q b{font-size:14px;display:block;margin-bottom:10px}
+  .opt{display:inline-block;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:7px 13px;font-size:13px;margin:0 6px 8px 0;cursor:pointer}.opt.sel{background:var(--vio);border-color:var(--vio);color:#fff}
+  .safecard{background:var(--card);border-radius:16px;padding:15px;margin-bottom:13px;border:1px solid rgba(255,255,255,.06)}.safecard .l{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.safecard .l b{font-size:14px}.dot{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}.safecard p{color:var(--mut);font-size:12.5px}.safecard.click{cursor:pointer}
+  .toggle{width:44px;height:26px;border-radius:99px;background:rgba(255,255,255,.15);position:relative;cursor:pointer;transition:.2s;flex-shrink:0}.toggle.on{background:var(--ok)}.toggle::after{content:"";position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.2s}.toggle.on::after{left:21px}
+  .search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 13px;margin-bottom:14px}.search input{flex:1;background:none;border:none;color:#fff;font-size:14px;outline:none}
+  .lrow{display:flex;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}.lrow .pic{width:46px;height:46px;border-radius:50%;background-size:cover;background-position:center;flex-shrink:0}.lrow b{font-size:14px}.lrow span{font-size:12px;color:var(--mut);display:block}
+  .rkrow{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid rgba(255,255,255,.05)}.rkrow .pos{width:26px;font-weight:800;font-size:15px;color:var(--mut)}.rkrow.me{background:rgba(255,46,110,.1);border-radius:12px;padding:11px 8px}.rkrow .pic{width:40px;height:40px;border-radius:50%;background-size:cover;background-position:center}
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:72px;background:rgba(31,20,24,.94);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.08);display:flex;padding-bottom:7px}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--mut);font-size:9px;cursor:pointer}.tab .i{font-size:19px}.tab.on{color:var(--mag)}
+  .toast{position:absolute;bottom:88px;left:50%;transform:translateX(-50%);background:#fff;color:#111;padding:11px 18px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;z-index:80;max-width:92%;text-align:center}.toast.show{opacity:1}
+  .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;z-index:70}.overlay.show{display:flex;animation:f .2s}
+  .sheet{background:var(--bg);width:100%;max-height:90%;border-radius:24px 24px 0 0;border-top:1px solid rgba(255,255,255,.12);padding:8px 18px 26px;overflow-y:auto;animation:up .28s}.sheet::-webkit-scrollbar{display:none}@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+  .grab{width:42px;height:5px;border-radius:99px;background:rgba(255,255,255,.25);margin:6px auto 14px}
+  .pf-pic{width:100%;height:300px;object-fit:cover;border-radius:18px}.pf-name{font-size:22px;font-weight:800;margin-top:14px}.pf-city{color:var(--mut);font-size:13px;margin-bottom:10px}
+  .pf-pic.vip{border:3px solid #ffc23d;box-shadow:0 0 26px rgba(255,194,61,.55)}.vip-badge{display:inline-block;background:linear-gradient(90deg,#ffd76b,#ffb02e);color:#3a2400;font-weight:800;font-size:12px;padding:5px 13px;border-radius:99px;margin-top:10px;letter-spacing:.5px}
+  .matchov{position:absolute;inset:0;z-index:95;background:rgba(10,5,8,.93);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:30px;animation:f .25s}
+  .matchbox{text-align:center;width:100%}
+  .mtitle{font-size:30px;font-weight:800;background:linear-gradient(90deg,var(--mag),var(--cy));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:26px}
+  .mpics{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:24px}
+  .mpic{width:108px;height:108px;border-radius:50%;border:3px solid var(--mag);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;color:#fff;box-shadow:0 0 30px rgba(255,46,110,.5)}
+  .mheart{font-size:34px;animation:pulse 1.2s infinite;margin:0 -6px;z-index:2}
+  .mtxt{font-size:16px;color:#f2ded5;margin-bottom:22px}
+  .mclose{background:none;border:none;color:var(--mut);font-size:13px;margin-top:14px;cursor:pointer;width:100%}.pf-bio{color:#f2ded5;font-size:14px;margin:12px 0;line-height:1.5}
+  .why{background:rgba(255,194,61,.1);border:1px solid rgba(255,194,61,.35);border-radius:14px;padding:12px 14px;margin:12px 0;font-size:13px;color:#ffe7b8}
+  .secret{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.22);border-radius:14px;padding:14px;margin:12px 0;font-size:13px;color:var(--mut);text-align:center}
+  .mephoto{width:96px;height:96px;border-radius:50%;margin:0 auto 14px;background:linear-gradient(135deg,var(--mag),var(--vio));background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;position:relative;border:2px solid rgba(255,255,255,.2)}.mephoto .cam{position:absolute;bottom:0;right:0;background:var(--vio);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid var(--bg)}
+  .clist-item{display:flex;justify-content:space-between;padding:11px 2px;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px}.clist-item span{color:var(--mut);font-size:12px}
+  .chatbubbles{display:flex;flex-direction:column;gap:8px;margin:10px 0;min-height:200px}
+  .bub{max-width:75%;padding:9px 13px;border-radius:16px;font-size:14px}.bub.them{background:var(--card);align-self:flex-start;border-bottom-left-radius:5px}.bub.me{background:linear-gradient(90deg,var(--mag),var(--vio));align-self:flex-end;border-bottom-right-radius:5px}
+  #chatScreen{position:absolute;inset:0;background:var(--bg);z-index:75;display:none;flex-direction:column}#chatScreen.on{display:flex}
+  .cs-head{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid rgba(255,255,255,.08)}.cs-back{font-size:32px;cursor:pointer;line-height:.6;color:var(--mut)}.cs-av{width:40px;height:40px;border-radius:50%;background-size:cover;background-position:center}.cs-head b{font-size:15px}
+  .cs-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
+  .cs-input{display:flex;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.08)}.cs-input input{flex:1;background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:12px 16px;color:#fff;outline:none;font-size:14px}.cs-input button{background:var(--mag);border:none;color:#fff;width:46px;border-radius:50%;font-size:16px;cursor:pointer}
+  .amts{display:flex;gap:10px;margin:8px 0 12px}.amts button{flex:1;background:var(--card);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:12px;padding:14px 0;font-weight:700;cursor:pointer}.amts button.sel{background:var(--vio);border-color:var(--vio)}
+  .photopick{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}.photopick img{width:66px;height:66px;border-radius:12px;object-fit:cover;cursor:pointer}.photopick .cam{width:66px;height:66px;border-radius:12px;background:var(--card);border:1px solid rgba(255,255,255,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--mut);font-size:11px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div id="login"><div class="lg"><span class="grad">ProRolê</span></div><div class="tl">O rolê mais seguro do Brasil.</div><div class="ds">Faça seu cadastro pra entrar e conversar ao vivo.</div>
+    <input id="loginName" class="lbtn" style="background:var(--card);border:1px solid rgba(255,255,255,.22)!important;color:#fff;text-align:center" placeholder="Seu nome">
+    <button class="lbtn lb-main" onclick="doLogin()">Entrar 🚀</button>
+    <div style="color:var(--mut);font-size:11px;margin-top:18px">Eventos +18 · ao entrar você aceita os termos</div></div>
+
+  <div class="top"><div class="brand"><span class="grad">ProRolê</span></div><div class="me" id="meAv" onclick="openMe()">L</div></div>
+
+  <div class="screen">
+    <section class="view on" id="v-eventos"><h2>Seus rolês 🎟️</h2><div class="sub">Todos os rolês disponíveis — entre no que você comprou.</div><div id="evList"></div><button class="btn alt" onclick="openCode()">🎟️ Já comprei (liberar pelo e-mail)</button></section>
+
+    <section class="view" id="v-role">
+      <h2 class="titlebtn" onclick="openEventSwitch()"><span id="roleTitle">Anime Friends 2026</span><span class="ar">trocar ▾</span></h2>
+      <div class="sub" id="roleSub">2–5 jul · 312 confirmadas · 🛡️ ambiente seguro</div>
+      <div class="kick">Quem vai 👀 <span class="lnk" onclick="openQuemVai()">ver todas →</span></div><div class="conf" id="confRow"></div>
+      <div class="kick" style="display:block">Feed do rolê 🔥</div><div class="seg"><div class="on" data-fd="geral" onclick="setFeed('geral')">Geral</div><div data-fd="conexoes" onclick="setFeed('conexoes')">Conexões</div></div><div id="feed"></div>
+    </section>
+
+    <section class="view" id="v-conectar"><h2>Conectar 🔗</h2><div class="sub">Afinidade, não pegação. O match só aparece quando você conecta 👀</div>
+      <div class="kick" style="display:block">🟢 Online agora (de verdade) <span id="onCount" style="color:var(--mut);font-size:11px;letter-spacing:0;text-transform:none"></span></div><div id="online"><p class="sub">Abra o app em outro aparelho (mesmo Wi-Fi) que a pessoa aparece aqui.</p></div>
+      <div class="stat-row"><div class="stat" onclick="openConns()"><b class="grad" id="cx">7</b><small>conexões ›</small></div><div class="stat" onclick="openRanking()"><b class="grad">#4</b><small>ranking ›</small></div><div class="stat" onclick="openCantada()"><b class="grad">💬</b><small>cantada ›</small></div></div>
+      <div class="tap" onclick="encostar()"><div class="em">⌚</div><b>Encostar pulseira</b><small>aproxime no celular da pessoa</small></div>
+      <div class="mission"><b>🎯 Missão secreta</b><p>Conecte com alguém de outro estado e ganhe um brinde. <b style="color:#fff">Quanto mais conexões, melhores os prêmios.</b></p></div></section>
+
+    <section class="view" id="v-chat"><h2>Chat 💬</h2><div class="sub">Converse com quem você conectou.</div><div id="chatList"></div></section>
+
+    <section class="view" id="v-dj"><h2>DJ ao vivo 🎧</h2><div class="sub">Peça sua música pro DJ.</div>
+      <div class="dj-now"><div class="disc"></div><div><small style="color:var(--mut);font-size:11px">TOCANDO AGORA</small><br><b>Evidências (Remix) — DJ ProRolê</b></div></div>
+      <div class="field"><label>Qual música você quer ouvir?</label><input id="songin" placeholder="ex: Ana Castela - Boiadeira"></div><button class="btn" onclick="pedirMusica()">🎵 Pedir música</button>
+      <div class="kick" style="display:block">Fila do DJ</div><div id="queue"></div></section>
+
+    <section class="view" id="v-carteira"><h2>Carteira 💳</h2><div class="sub">Cashless: pague tudo pela pulseira, sem carteira nem celular.</div>
+      <div class="balance"><small>Saldo ProRolê</small><div class="v">R$ <span id="saldo">85</span>,00</div><span class="chip">⌚ vinculado à sua pulseira</span></div>
+      <button class="btn" style="margin-bottom:16px" onclick="openCarregar()">＋ Carregar saldo</button>
+      <div class="infocard" onclick="openConsumo()"><div><b>🍹 Consumo de hoje</b><br><span>toque pra ver tudo + calorias</span></div><b class="grad" style="font-size:20px" id="consKcal">340 kcal</b></div>
+      <div class="kick" style="display:block">Meus itens 🎒</div><div id="myItems"></div>
+      <div class="kick" style="display:block">Loja do rolê 🛒</div><div class="store-grid" id="store"></div></section>
+
+    <button class="fab" id="fab" style="display:none" onclick="openCompose()">＋</button>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab on" data-v="eventos" onclick="go('eventos')"><div class="i">🎟️</div>Eventos</div>
+    <div class="tab" data-v="role" onclick="go('role')"><div class="i">🔥</div>Rolê</div>
+    <div class="tab" data-v="conectar" onclick="go('conectar')"><div class="i">🔗</div>Conectar</div>
+    <div class="tab" data-v="chat" onclick="go('chat')"><div class="i">💬</div>Chat</div>
+    <div class="tab" data-v="dj" onclick="go('dj')"><div class="i">🎧</div>DJ</div>
+    <div class="tab" data-v="carteira" onclick="go('carteira')"><div class="i">💳</div>$</div>
+  </div>
+  <div id="chatScreen"><div class="cs-head"><span class="cs-back" onclick="closeChat()">‹</span><div class="cs-av" id="csAv"></div><div><b id="csName"></b><div id="csMatch" style="font-size:11px;color:var(--mut)"></div></div></div><div class="cs-body" id="bubs"></div><div class="cs-input"><input id="msgin" placeholder="Mensagem..." onkeydown="if(event.key==='Enter')sendMsg()"><button onclick="sendMsg()">➤</button></div></div>
+  <div class="overlay" id="overlay" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="sheet"></div></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  const P='identidade/perfis/',A='identidade/avatars/',LJ='identidade/loja/',EV='identidade/eventos/',FE='identidade/feed/';
+  let me={name:'Você',age:27,city:'Santo André/SP',ig:'@vc',bio:'Tô no rolê pra curtir e fazer amizade 🤙',tags:['Anime','Game','Sertanejo','Rock'],look:'Curtir',photo:'',visible:true,cantada:'',respZap:''};
+  const women=[
+    {id:'bia',name:'Bia',age:22,city:'Campinas/SP',photo:A+'bia.png',tags:['Anime','K-pop','Cosplay'],look:'Amizade',bio:'Otaku de carteirinha 💜'},
+    {id:'mari',name:'Mariana',age:21,city:'Belo Horizonte/MG',photo:A+'mariana.png',tags:['Anime','Sertanejo','Foto'],look:'Paquera',bio:'Amo registrar tudo 📸'},
+    {id:'lari',name:'Larissa',age:24,city:'São Paulo/SP',photo:P+'w1.png',tags:['Funk','Balada','Glam'],look:'Curtir',bio:'Sextou é lei.',vip:true},
+    {id:'duda',name:'Duda',age:23,city:'Ribeirão Preto/SP',photo:P+'w2.png',tags:['Sertanejo','Rodeio','Country'],look:'Paquera',bio:'Peoa raiz 🤠'},
+    {id:'carol',name:'Carol',age:22,city:'Curitiba/PR',photo:P+'w3.png',tags:['Game','Esporte','Pop'],look:'Amizade',bio:'Gamer e treino.'},
+    {id:'yuna',name:'Yuna',age:20,city:'São Paulo/SP',photo:P+'w4.png',tags:['K-pop','Anime','Dança'],look:'Curtir',bio:'Stan de tudo 💫'},
+    {id:'julia',name:'Júlia',age:25,city:'Santos/SP',photo:P+'w5.png',tags:['Anime','RPG','Rock'],look:'Amizade',bio:'Mestre de RPG 🎲'},
+    {id:'bibi',name:'Bibi',age:23,city:'Rio de Janeiro/RJ',photo:P+'w6.png',tags:['Festival','Eletrônica','Praia'],look:'Paquera',bio:'Festival é vida 🌴'},
+    {id:'manu',name:'Manu',age:24,city:'São Paulo/SP',photo:P+'w7.png',tags:['Indie','Rock','Arte'],look:'Curtir',bio:'Indie girl.'},
+    {id:'saka',name:'Sakura',age:21,city:'Campinas/SP',photo:P+'w8.png',tags:['Cosplay','Anime','Game'],look:'Amizade',bio:'Cosplayer 💖'}
+  ];
+  const wmap=id=>women.find(w=>w.id===id);
+  let connections=[];
+  let events=[{id:'anime',name:'Anime Friends 2026',date:'2–5 jul · Anhembi, SP',img:EV+'anime.png',going:312,bought:true},{id:'barretos',name:'Barretos 2026',date:'20–30 ago · Parque do Peão',img:EV+'barretos.png',going:198,bought:false},{id:'ccxp',name:'CCXP 2026',date:'3–6 dez · SP Expo',img:EV+'ccxp.png',going:140,bought:false}];
+  let curEvent='anime',feedTab='geral',saldo=0;
+  let queue=[['Boiadeira','Ana Castela'],['Erro Gostoso','Simone Mendes']];
+  let myItems=[];
+  let consumo=[{n:'Água',kcal:0,alc:0},{n:'Gin tônica',kcal:180,alc:1},{n:'Caipirinha',kcal:250,alc:1},{n:'Energético',kcal:160,alc:0}];
+  const cantadaBank=['Cê é tipo wifi: quero me conectar 😏','Seu nome é Google? Porque você tem tudo que eu procuro 🔍','Cê é meu boss de fim de fase: difícil, mas eu te conquisto 🎮','Tá com frio? Posso ser seu casaco a noite toda 🧥','Se beleza fosse crime, você pegava perpétua 🚔'];
+  const store=[
+    {n:'YoPro Proteico',cat:'25g proteína · open bar consciente',pr:14,img:'yopro.png',kcal:150,stock:40},
+    {n:'Energético',cat:'lata 250ml',pr:15,img:'energetico.png',kcal:160,stock:80},
+    {n:'Gin Premium',cat:'fora do open bar',pr:28,img:'gin.png',kcal:180,stock:0},
+    {n:'Pelúcia ❤️',cat:'presenteie alguém',pr:35,img:'pelucia.png',kcal:0,stock:12},
+    {n:'Gummy Vitamina',cat:'fornecedor parceiro',pr:12,img:'gummies.png',kcal:90,stock:25},
+    {n:'Kit Anti-ressaca',cat:'retira no balcão',pr:20,img:'antiressaca.png',kcal:30,stock:50},
+    {n:'Furar fila do bar',cat:'passe VIP · sem espera',pr:25,img:'skip.png',kcal:0,stock:60},
+    {n:'Cabine de Glitter',cat:'brilho + gema no rosto',pr:22,img:'glitter.png',kcal:0,stock:80},
+    {n:'Abadá personalizado',cat:'com seu nome',pr:40,img:'abada.png',kcal:0,stock:50},
+    {n:'Polaroid na hora',cat:'sua foto impressa',pr:18,img:'polaroid.png',kcal:0,stock:100},
+    {n:'Chapéu ProRolê',cat:'edição VIP',pr:0,img:'chapeu.png',kcal:0,stock:99}
+  ];
+  const feedPosts={geral:[{who:'mari',cap:'esquenta no ônibus 🚌',img:FE+'f1.png',likes:48,time:'12 min'},{who:'saka',cap:'cosplay pronto! 💖',img:FE+'f2.png',likes:121,time:'30 min'},{who:'duda',cap:'contagem pro Barretos 🤠',img:FE+'f3.png',likes:67,time:'1h'}],conexoes:[{who:'bia',cap:'piscina do hotel só dos conectados 🩷',img:FE+'pool2.png',likes:54,time:'15 min'},{who:'carol',cap:'pool party 🌊',img:FE+'pool1.png',likes:72,time:'40 min'}]};
+  const comments={mari:[['bia','partiu!! 🔥']],saka:[['yuna','arrasou 😍']],duda:[['carol','invejaa']],bia:[['julia','tmj']],carol:[['bia','bora']]};
+  let chats={bia:[['them','oiii vi que conectamos 💜']],duda:[['them','bora marcar no Barretos? 🤠']]};
+
+  function affinity(w){const sh=w.tags.filter(t=>me.tags.includes(t));const uf=w.city.split('/')[1]===me.city.split('/')[1];const lk=w.look===me.look;let s=24+sh.length*13+(uf?8:0)+(lk?7:0);if(s>96)s=96;return{s,sh,uf,lk}}
+  function whyText(w){const a=affinity(w);let r=[];if(a.sh.length)r.push('curtem '+a.sh.join(' e '));if(a.uf)r.push('mesmo estado');if(a.lk)r.push('os dois procuram '+w.look.toLowerCase());if(!r.length)r.push('quase nada em comum — desafio 😏');return 'Match '+a.s+'%: '+r.join(', ')+'.'}
+
+  function doLogin(){const n=(document.getElementById('loginName').value||'').trim();if(n)me.name=n;document.getElementById('login').style.display='none';renderMeAv();connectWS()}
+  let ws=null,myId=null,online=[];
+  function connectWS(){try{ws=new WebSocket('ws://'+location.hostname+':8081')}catch(e){return}
+    ws.onopen=()=>ws.send(JSON.stringify({type:'hello',name:me.name,photo:me.photo||''}));
+    ws.onmessage=(ev)=>{let m;try{m=JSON.parse(ev.data)}catch(e){return}
+      if(m.type==='welcome'){myId=m.id}
+      else if(m.type==='presence'){online=m.users;renderOnline()}
+      else if(m.type==='msg'){const k='L:'+m.from.id;if(!chats[k])chats[k]=[];chats[k].push(['them',m.text]);if(curChat===k)renderBubs();else toast('💬 '+m.from.name+': '+m.text)}};
+    ws.onclose=()=>{setTimeout(connectWS,3000)};}
+  function renderOnline(){const el=document.getElementById('online');if(!el)return;const others=online.filter(u=>u.id!==myId);const cnt=document.getElementById('onCount');if(cnt)cnt.textContent=others.length?'· '+others.length+' por perto':'· ninguém ainda';if(!others.length){el.innerHTML='<p class="sub">Abra o app em outro aparelho (mesmo Wi-Fi) que a pessoa aparece aqui 🟢</p>';return}el.innerHTML='<div class="conf">'+others.map(u=>{const nm=(u.name||'?');const init=nm[0];return `<div class="person" onclick="openLiveChat('${u.id}','${nm.replace(/'/g,'')}','${u.photo||''}')"><div class="pic" style="${u.photo?`background-image:url('${u.photo}')`:'background:linear-gradient(135deg,var(--mag),var(--vio));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:20px'}">${u.photo?'':init}</div><small>${nm}</small></div>`}).join('')+'</div>'}
+  function openLiveChat(uid,name,photo){const k='L:'+uid;curChat=k;if(!chats[k])chats[k]=[];document.getElementById('csAv').style.backgroundImage=photo?`url('${photo}')`:'';document.getElementById('csName').textContent=name;document.getElementById('csMatch').textContent='🟢 online agora';document.getElementById('chatScreen').classList.add('on');renderBubs()}
+  function renderMeAv(){const a=document.getElementById('meAv');if(me.photo){a.style.backgroundImage=`url('${me.photo}')`;a.textContent=''}else{a.style.backgroundImage='';a.textContent=me.name==='Você'?'L':me.name[0]}}
+  function renderEvents(){document.getElementById('evList').innerHTML=events.map(e=>`<div class="ev"><div class="img" style="background-image:url('${e.img}')"><span>${e.name}</span></div><div class="body"><div class="meta"><span>${e.date}</span>${e.bought?'<span class="badge bg-ok">✓ comprado</span>':'<span class="badge bg-lock">🔒 não comprado</span>'}</div><div class="meta"><span>${e.going} confirmadas</span></div>${e.bought?`<button class="btn" onclick="setEvent('${e.id}');go('role')">Entrar no rolê</button>`:`<button class="btn alt" onclick="openBuy('${e.id}')">Ver opções</button>`}</div></div>`).join('')}
+  function setEvent(id){curEvent=id;const e=events.find(x=>x.id===id);document.getElementById('roleTitle').textContent=e.name;document.getElementById('roleSub').textContent=e.date+' · '+e.going+' confirmadas · 🛡️ ambiente seguro'}
+  function renderConf(){document.getElementById('confRow').innerHTML=women.map(w=>`<div class="person" onclick="profile('${w.id}',true)"><div class="pic" style="background-image:url('${w.photo}')${w.vip?';border:2.5px solid #ffc23d;box-shadow:0 0 14px rgba(255,194,61,.55)':''}"></div><small>${w.name}${w.vip?' ⭐':''}</small></div>`).join('')}
+  function renderFeed(){const list=feedPosts[feedTab]||[];document.getElementById('feed').innerHTML=list.map((p,idx)=>{const u=wmap(p.who);const pic=u?u.photo:(me.photo||'');const nm=u?u.name:'Você';const mine=p.who==='you';return `<div class="post"><div class="h"><div class="pic" style="background-image:url('${pic}')" onclick="${u?`profile('${p.who}',true)`:''}"></div><div style="flex:1" onclick="${u?`profile('${p.who}',true)`:''}"><b>${nm}</b><span>há ${p.time}</span></div>${mine?`<span onclick="delPost(${idx})" style="cursor:pointer;color:var(--mut);padding:4px 8px">🗑</span>`:''}</div><div class="photo" style="background-image:url('${p.img}')"></div><div class="cap">${p.cap}</div><div class="acts"><span class="a" onclick="like(this)">🤍 <span>${p.likes}</span></span><span class="a" onclick="openComments('${p.who}')">💬 ${(comments[p.who]||[]).length}</span><span class="a" onclick="toast('Link copiado ↗️')">↗️</span></div></div>`}).join('')||'<p class="sub">Nada aqui. Posta o primeiro! ＋</p>'}
+  function delPost(idx){feedPosts[feedTab].splice(idx,1);renderFeed();toast('Post apagado 🗑')}
+  function setFeed(t){feedTab=t;document.querySelectorAll('.seg div[data-fd]').forEach(d=>d.classList.toggle('on',d.dataset.fd===t));renderFeed()}
+  function renderStore(){document.getElementById('store').innerHTML=store.map((p,i)=>{const out=p.stock<=0;return `<div class="prod ${out?'out':''}">${out?'<span class="badge bg-out out-tag">esgotado</span>':''}<img src="${LJ+p.img}"><div class="pb3"><b>${p.n}</b><span>${p.cat}${p.kcal?' · '+p.kcal+'kcal':''}</span><button class="buy" ${out?'disabled style="opacity:.5"':''} onclick="comprar(${i})">${out?'Esgotado':(p.pr?'Comprar · <span class=pr>R$ '+p.pr+'</span>':'Incluso')}</button></div></div>`}).join('')}
+  function renderItems(){const el=document.getElementById('myItems');if(!myItems.length){el.innerHTML='<p class="sub">Compre algo e ele aparece aqui pra carregar na pulseira.</p>';return}el.innerHTML=myItems.map((it,i)=>{let act;if(it.consumed)act=`<span style="font-size:11px;color:var(--ok)">✅ às ${it.when}</span>`;else if(!it.loaded)act=`<button class="mini" onclick="loadItem(${i})">⌚ Carregar</button>`;else act=`<button class="mini" onclick="giftItem(${i})">🎁 Dar</button><button class="mini" onclick="consumeItem(${i})">🍹 Usar</button>`;return `<div class="myitem"><img src="${it.img}"><div class="t"><b>${it.name}</b><span>${it.consumed?'usado':it.loaded?'na pulseira ⌚':'carregue na pulseira'}</span></div><div style="text-align:right">${act}</div></div>`}).join('')}
+  function renderQueue(){document.getElementById('queue').innerHTML=queue.map((q,i)=>`<div class="qrow"><div class="n">${i+1}</div><div><b>${q[0]}</b><span>${q[1]}</span></div></div>`).join('')||'<p class="sub">Fila vazia.</p>'}
+  function renderConnCount(){document.getElementById('cx').textContent=connections.length}
+  function renderKcal(){const k=consumo.reduce((a,b)=>a+b.kcal,0);const d=consumo.reduce((a,b)=>a+(b.alc||0),0);document.getElementById('consKcal').textContent=d+'🍺 · '+k+' kcal'}
+  function renderChatList(){const el=document.getElementById('chatList');if(!connections.length){el.innerHTML='<p class="sub">Conecte com alguém pra começar a conversar.</p>';return}el.innerHTML=connections.map(id=>{const w=wmap(id);const msgs=chats[id]||[];const last=msgs.length?msgs[msgs.length-1][1]:'Diga oi 👋';return `<div class="lrow" onclick="openChat('${id}')"><div class="pic" style="background-image:url('${w.photo}')"></div><div style="flex:1"><b>${w.name}</b><span>${last}</span></div></div>`}).join('')}
+
+  function go(v){document.querySelectorAll('.view').forEach(s=>s.classList.remove('on'));document.getElementById('v-'+v).classList.add('on');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.v===v));document.querySelector('.screen').scrollTop=0;document.getElementById('fab').style.display=(v==='role')?'flex':'none';if(v==='chat')renderChatList()}
+  let T;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(T);T=setTimeout(()=>t.classList.remove('show'),2200)}
+  function like(el){const liked=el.firstChild.textContent.trim()==='❤️';const s=el.querySelector('span');s.textContent=(+s.textContent)+(liked?-1:1);el.firstChild.textContent=liked?'🤍 ':'❤️ '}
+  const ov=document.getElementById('overlay'),sh=document.getElementById('sheet');
+  function openSheet(h){sh.innerHTML='<div class="grab"></div>'+h;ov.classList.add('show');sh.scrollTop=0}
+  function closeSheet(){ov.classList.remove('show')}
+
+  function openEventSwitch(){openSheet(`<h2 style="font-size:19px">Trocar de rolê</h2><p class="sub">Você só interage nos eventos que comprou.</p>`+events.map(e=>`<div class="lrow" onclick="${e.bought?`setEvent('${e.id}');closeSheet();toast('Agora no ${e.name}')`:`openBuy('${e.id}')`}"><div class="pic" style="background-image:url('${e.img}')"></div><div style="flex:1"><b>${e.name}</b><span>${e.date} · ${e.going} confirmadas</span></div>${e.bought?'<span class="badge bg-ok">✓</span>':'<span class="badge bg-lock">🔒</span>'}</div>`).join(''))}
+  function openBuy(id){const e=events.find(x=>x.id===id);openSheet(`<h2 style="font-size:19px">${e.name}</h2><p class="sub">${e.date} · ${e.going} confirmadas 🔒 você ainda não comprou</p><button class="btn wpp" onclick="window.open('https://wa.me/55XXXXXXXXXXX?text=Quero%20ir%20no%20${encodeURIComponent(e.name)}','_blank')">💬 Comprar pelo WhatsApp</button><button class="btn alt" style="margin-top:10px" onclick="openQuemVai('${id}')">👀 Ver quem vai (sem interagir)</button>`)}
+  function openCode(){openSheet(`<h2 style="font-size:19px">Liberar evento</h2><p class="sub">Comprou pelo WhatsApp? Coloque o <b>e-mail da sua conta</b> que a gente libera automático.</p><div class="field"><input id="codein" placeholder="seu@email.com"></div><button class="btn" onclick="useCode()">Liberar meu evento</button>`)}
+  function useCode(){const v=document.getElementById('codein').value.trim();if(!v){toast('Coloca seu e-mail 🙂');return}const e=events.find(x=>!x.bought);if(e){e.bought=true;renderEvents();closeSheet();toast('✅ '+e.name+' liberado na sua conta!')}else{closeSheet();toast('Você já tem todos 😎')}}
+
+  function openQuemVai(id){id=id||curEvent;const e=events.find(x=>x.id===id);const can=e.bought;openSheet(`<h2 style="font-size:19px">Quem vai · ${e.name}</h2><div class="search">🔍<input id="qsearch" placeholder="Buscar pessoa..." oninput="filterQV(${can})"></div>${can?'':'<p class="sub">🔒 Compre o evento pra interagir.</p>'}<div id="qvlist"></div>`);renderQV('',can)}
+  function renderQV(term,can){const t=(term||'').toLowerCase();const list=women.filter(w=>w.name.toLowerCase().includes(t));document.getElementById('qvlist').innerHTML=list.map(w=>`<div class="lrow" onclick="profile('${w.id}',${can})"><div class="pic" style="background-image:url('${w.photo}')${w.vip?';border:2.5px solid #ffc23d;box-shadow:0 0 12px rgba(255,194,61,.55)':''}"></div><div style="flex:1"><b>${w.name}, ${w.age}${w.vip?' <span style="color:#ffc23d">⭐ VIP</span>':''}</b><span>📍 ${w.city.split('/')[0]} · ${connections.includes(w.id)?affinity(w).s+'% 🔓':'?? match 🔒'}</span></div></div>`).join('')||'<p class="sub">Ninguém com esse nome.</p>'}
+  function filterQV(can){renderQV(document.getElementById('qsearch').value,can)}
+
+  function profile(id,interact){const w=wmap(id);const conn=connections.includes(id);let body;
+    if(conn){body=`<div class="why">💡 <b>Por que combinam?</b><br>${whyText(w)}</div><div class="pf-bio">${w.bio}</div><div class="tags" style="margin-bottom:16px">${w.tags.map(t=>'<span class="tag">'+t+'</span>').join('')}</div><button class="btn" onclick="openChat('${id}')">💬 Conversar</button><button class="btn alt" style="margin-top:10px" onclick="delConn('${id}');closeSheet();toast('Match desfeito 💔')">💔 Desfazer match</button>`}
+    else if(interact){body=`<div class="secret">🔒 O match e os interesses dela só aparecem <b>depois que vocês conectarem</b>.<br>Será que dá mais de 90%? 👀</div><button class="btn" onclick="pedir('${id}')">🔗 Pedir conexão</button>`}
+    else{body=`<div class="secret">🔒 Compre o evento pra poder conectar e ver o match.</div>`}
+    openSheet(`<img class="pf-pic${w.vip?' vip':''}" src="${w.photo}">${w.vip?'<div class="vip-badge">⭐ MEMBRO VIP</div>':''}<div class="pf-name">${w.name}, ${w.age}${w.vip?' ⭐':''}</div><div class="pf-city">📍 ${w.city}${conn?' · procura '+w.look.toLowerCase():''}</div>${body}`)}
+  function pedir(id){const w=wmap(id);if(!connections.includes(id))connections.push(id);renderConnCount();const a=affinity(w);
+    if(me.cantada){if(!chats[id])chats[id]=[];chats[id].push(['me','💬 '+me.cantada]);me.cantada='';}
+    closeSheet();showMatch(w,a.s);}
+  function showMatch(w,pct){
+    const myPic=me.photo?`url('${me.photo}')`:'linear-gradient(135deg,var(--mag),var(--vio))';
+    const init=(me.name&&me.name!=='Você')?me.name[0]:'L';
+    const ov=document.createElement('div');ov.className='matchov';ov.onclick=()=>ov.remove();
+    ov.innerHTML=`<div class="matchbox" onclick="event.stopPropagation()">
+      <div class="mtitle">É UM MATCH! 💜</div>
+      <div class="mpics">
+        <div class="mpic" style="background:${myPic};background-size:cover;background-position:center">${me.photo?'':init}</div>
+        <div class="mheart">💞</div>
+        <div class="mpic" style="background-image:url('${w.photo}')"></div>
+      </div>
+      <div class="mtxt">Você e <b>${w.name}</b> se conectaram${pct?` · <b>${pct}%</b> de match`:''}</div>
+      <button class="btn" onclick="this.closest('.matchov').remove();openChat('${w.id}')">💬 Mandar mensagem</button>
+      <button class="mclose" onclick="this.closest('.matchov').remove()">continuar no rolê</button>
+    </div>`;
+    document.querySelector('.phone').appendChild(ov);}
+
+  function openConns(){openSheet(`<h2 style="font-size:19px">Minhas conexões (${connections.length})</h2><div id="connlist"></div>`);renderConnList()}
+  function renderConnList(){const el=document.getElementById('connlist');if(!connections.length){el.innerHTML='<p class="sub">Sem conexões.</p>';return}el.innerHTML=connections.map(id=>{const w=wmap(id);return `<div class="lrow"><div class="pic" style="background-image:url('${w.photo}')" onclick="profile('${id}',true)"></div><div style="flex:1" onclick="profile('${id}',true)"><b>${w.name}, ${w.age}</b><span>📍 ${w.city.split('/')[0]} · ${affinity(w).s}% 🔓</span></div><button class="mini" onclick="delConn('${id}');renderConnList()">💔</button></div>`}).join('')}
+  function delConn(id){connections=connections.filter(x=>x!==id);renderConnCount();toast('Match desfeito')}
+
+  function openRanking(){let data=[{n:'Bibi',c:19,p:women[7].photo},{n:'Duda',c:16,p:women[3].photo},{n:'Larissa',c:13,p:women[2].photo},{n:'Você',c:connections.length,p:me.photo,me:true},{n:'Carol',c:9,p:women[4].photo},{n:'Yuna',c:7,p:women[5].photo}];data.sort((a,b)=>b.c-a.c);openSheet(`<h2 style="font-size:19px">🏆 Ranking de conexões</h2><div class="why" style="background:rgba(255,46,110,.12);border-color:rgba(255,46,110,.4);color:#ffd1df">🥇 O 1º lugar ganha a <b>próxima viagem DE GRAÇA!</b></div>${data.map((d,i)=>`<div class="rkrow ${d.me?'me':''}"><div class="pos">${i+1}º</div><div class="pic" style="background:${d.p?`url('${d.p}')`:'linear-gradient(135deg,var(--mag),var(--vio))'};background-size:cover;background-position:center"></div><div style="flex:1"><b>${d.n}</b></div><b class="grad">${d.c}</b></div>`).join('')}`)}
+
+  let cur=0;
+  function encostar(){const sorted=[...women].sort((a,b)=>affinity(b).s-affinity(a).s);const w=sorted[cur++%sorted.length];const conn=connections.includes(w.id);openSheet(`<img class="pf-pic" src="${w.photo}"><div class="pf-name">${w.name}, ${w.age}</div><div class="pf-city">📍 ${w.city}</div>${conn?`<div class="why">💡 ${whyText(w)}</div><button class="btn" onclick="closeSheet();openChat('${w.id}')">💬 Conversar</button>`:`<div class="secret">🔒 Conecte pra revelar o match dela 👀</div><button class="btn" onclick="pedir('${w.id}')">🔗 Pedir conexão</button>`}<button class="btn alt" style="margin-top:10px" onclick="closeSheet()">Agora não</button>`);toast('⌚ pulseira lida')}
+
+  // CANTADA (separado)
+  function openCantada(){openSheet(`<h2 style="font-size:19px">💬 Sua cantada carregada</h2><p class="sub">Ela é entregue automático no celular da pessoa quando você conecta — e some depois. Aí você carrega outra.</p>
+    <div class="why" style="text-align:center">${me.cantada?'Carregada: "'+me.cantada+'"':'🔋 Nenhuma cantada carregada'}</div>
+    <div class="field"><label>Escreva sua cantada</label><input id="cantin" value="${me.cantada}" placeholder="manda a sua 😏"></div>
+    <button class="btn alt" onclick="randCantada()">🎲 Cantada aleatória</button>
+    <button class="btn" style="margin-top:10px" onclick="saveCantada()">Carregar na pulseira</button>`)}
+  function randCantada(){const c=cantadaBank[Math.floor((cur++)%cantadaBank.length)];document.getElementById('cantin').value=c}
+  function saveCantada(){me.cantada=document.getElementById('cantin').value.trim();closeSheet();toast(me.cantada?'💬 Cantada carregada!':'Cantada limpa')}
+
+  // CHAT
+  let curChat=null;
+  function openChat(id){if(!connections.includes(id)){toast('Conecte primeiro 🔗');return}curChat=id;const w=wmap(id);if(!chats[id])chats[id]=[];document.getElementById('csAv').style.backgroundImage=`url('${w.photo}')`;document.getElementById('csName').textContent=w.name+', '+w.age;document.getElementById('csMatch').textContent=affinity(w).s+'% match 🔓';document.getElementById('chatScreen').classList.add('on');closeSheet();renderBubs()}
+  function closeChat(){document.getElementById('chatScreen').classList.remove('on');renderChatList()}
+  function renderBubs(){const msgs=chats[curChat]||[];const b=document.getElementById('bubs');b.innerHTML=msgs.map(m=>`<div class="bub ${m[0]==='me'?'me':'them'}">${m[1]}</div>`).join('')||'<p class="sub" style="text-align:center;margin:auto">Diga oi 👋</p>';b.scrollTop=b.scrollHeight}
+  function sendMsg(){const i=document.getElementById('msgin');const v=i.value.trim();if(!v)return;chats[curChat].push(['me',v]);i.value='';renderBubs();if(curChat&&curChat.indexOf('L:')===0){const uid=curChat.slice(2);if(ws&&ws.readyState===1)ws.send(JSON.stringify({type:'msg',to:uid,text:v}));return}const id=curChat;setTimeout(()=>{const reps=['kkk bom 😄','partiu então!','bora marcar','arrasou 🔥','tmj 🙌'];chats[id].push(['them',reps[Math.floor(cur++%reps.length)]]);if(curChat===id)renderBubs()},900)}
+
+  let curComments=null;
+  function openComments(id){curComments=id;if(!comments[id])comments[id]=[];const list=comments[id];openSheet(`<h2 style="font-size:18px;margin-bottom:14px">Comentários</h2><div id="clist">`+(list.length?list.map(c=>cmtHTML(c[0],c[1])).join(''):'<p class="sub">Seja o primeiro a comentar 💬</p>')+`</div><div class="cmt-input"><input id="cin" placeholder="Comenta aí..."><button onclick="addCmt()">Enviar</button></div>`)}
+  function cmtHTML(who,txt){const u=wmap(who);const pic=u?`style="background-image:url('${u.photo}')"`:(me.photo?`style="background-image:url('${me.photo}')"`:'');const nm=u?u.name:'Você';return `<div class="cmt"><div class="pic" ${pic}></div><div class="bd"><b>${nm}</b><p>${txt}</p></div></div>`}
+  function addCmt(){const i=document.getElementById('cin');if(!i.value.trim())return;comments[curComments].push(['you',i.value]);const cl=document.getElementById('clist');if(cl.querySelector('.sub'))cl.innerHTML='';cl.insertAdjacentHTML('beforeend',cmtHTML('you',i.value));i.value='';sh.scrollTop=sh.scrollHeight;renderFeed()}
+
+  let composeImg=FE+'f1.png';
+  function openCompose(){composeImg=FE+'f1.png';openSheet(`<h2 style="font-size:19px">Postar no feed</h2><div class="seg" style="margin:10px 0"><div class="on" id="cgeral" onclick="this.classList.add('on');document.getElementById('cconex').classList.remove('on')">Geral</div><div id="cconex" onclick="this.classList.add('on');document.getElementById('cgeral').classList.remove('on')">Só conexões</div></div><div class="field"><label>Legenda</label><input id="capin" placeholder="o que tá rolando?"></div><label style="font-size:12px;color:var(--mut)">Foto</label><div class="photopick" id="cphotos"><div class="cam" onclick="document.getElementById('camIn').click()">📷<div>Câmera</div></div><div class="cam" onclick="document.getElementById('galIn').click()">🖼️<div>Galeria</div></div>${['f1.png','f2.png','f3.png','pool1.png','pool2.png'].map((f,i)=>`<img src="${FE+f}" onclick="composeImg='${FE+f}';markPhoto(this)" ${i===0?'style="outline:3px solid var(--mag)"':''}>`).join('')}</div><input type="file" id="camIn" accept="image/*" capture="environment" style="display:none" onchange="useFilePhoto(this)"><input type="file" id="galIn" accept="image/*" style="display:none" onchange="useFilePhoto(this)"><button class="btn" onclick="doPost()">Postar</button>`)}
+  function markPhoto(el){[...document.getElementById('cphotos').querySelectorAll('img')].forEach(c=>c.style.outline='');el.style.outline='3px solid var(--mag)'}
+  function useFilePhoto(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{composeImg=e.target.result;toast('Foto escolhida 📸')};r.readAsDataURL(f)}
+  function doPost(){const cap=document.getElementById('capin').value.trim()||'novo post 🔥';const where=document.getElementById('cconex').classList.contains('on')?'conexoes':'geral';feedPosts[where].unshift({who:'you',cap,img:composeImg,likes:0,time:'agora'});closeSheet();feedTab=where;document.querySelectorAll('.seg div[data-fd]').forEach(d=>d.classList.toggle('on',d.dataset.fd===where));renderFeed();go('role');toast('Postado ✅')}
+
+  function pedirMusica(){const i=document.getElementById('songin');const v=i.value.trim();if(!v){toast('Escreve a música 🎵');return}const parts=v.split('-');const t=(parts[1]||parts[0]).trim();const ar=(parts[1]?parts[0]:'Pedido').trim();queue.push([t,ar]);renderQueue();i.value='';toast('🎵 Na fila do DJ!')}
+
+  function comprar(i){const p=store[i];if(p.stock<=0){toast('Esgotado 😕');return}if(!p.pr){p.stock--;myItems.push({name:p.n,img:LJ+p.img,loaded:false,consumed:false,when:''});renderStore();renderItems();toast(p.n+' nos seus itens 🎒');return}if(saldo<p.pr){toast('Saldo insuficiente — carrega 💸');return}saldo-=p.pr;p.stock--;document.getElementById('saldo').textContent=saldo;myItems.push({name:p.n,img:LJ+p.img,loaded:false,consumed:false,when:''});renderStore();renderItems();toast(p.n+' comprado! 🎒')}
+  function loadItem(i){myItems[i].loaded=true;renderItems();toast('⌚ '+myItems[i].name+' carregado')}
+  function consumeItem(i){const d=new Date();const hh=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');myItems[i].consumed=true;myItems[i].when=hh;renderItems();toast('🍹 baixa às '+hh)}
+  function giftItem(i){const nm=myItems[i].name;myItems.splice(i,1);renderItems();toast('🎁 '+nm+' presenteado!')}
+  let recAmt=100;
+  function openCarregar(){openSheet(`<h2 style="font-size:19px">Carregar saldo</h2><p class="sub">Coloque quanto quiser. Cai na hora na sua pulseira.</p><div class="amts"><button onclick="setAmt(this,50)">R$50</button><button class="sel" onclick="setAmt(this,100)">R$100</button><button onclick="setAmt(this,200)">R$200</button></div><div class="field"><label>Ou um valor à sua escolha</label><input id="customAmt" inputmode="numeric" placeholder="R$ ___"></div><div class="field"><label>Forma de pagamento</label><input value="Pix / Cartão de crédito" readonly></div><button class="btn" onclick="payNow()">Carregar agora</button>`)}
+  function setAmt(el,v){recAmt=v;document.getElementById('customAmt').value='';[...el.parentNode.children].forEach(c=>c.classList.remove('sel'));el.classList.add('sel')}
+  function payNow(){const cu=document.getElementById('customAmt').value;const v=cu?parseInt(cu.replace(/\D/g,'')):recAmt;if(!v){toast('Escolhe um valor 🙂');return}toast('Processando...');setTimeout(()=>{saldo+=v;document.getElementById('saldo').textContent=saldo;closeSheet();toast('✅ +R$'+v+' na pulseira')},1100)}
+
+  function openConsumo(){const tot=consumo.reduce((a,b)=>a+b.kcal,0);const dos=consumo.reduce((a,b)=>a+(b.alc||0),0);openSheet(`<h2 style="font-size:19px">🍹 Consumo de hoje</h2><p class="sub">Seu histórico do dia, registrado automático pela pulseira.</p><div class="clist-item"><b style="color:var(--mag)">🍺 Doses de álcool</b><b class="grad">${dos}</b></div>${consumo.map(c=>`<div class="clist-item"><b>${c.alc?'🍺 ':''}${c.n}</b><span>${c.kcal} kcal</span></div>`).join('')}<div class="clist-item" style="border:0"><b style="color:var(--cy)">Total</b><b class="grad">${tot} kcal</b></div><button class="btn" style="margin-top:14px" onclick="postConsumo()">📢 Postar meu consumo do dia</button>`)}
+  function postConsumo(){const tot=consumo.reduce((a,b)=>a+b.kcal,0);feedPosts.geral.unshift({who:'you',cap:'meu consumo hoje: '+consumo.map(c=>c.n).join(', ')+' · '+tot+' kcal 🍹',img:FE+'f1.png',likes:0,time:'agora'});closeSheet();feedTab='geral';renderFeed();go('role');toast('Consumo postado no feed 📢')}
+
+  const allTags=['Anime','Game','Sertanejo','Rock','K-pop','Funk','Cosplay','Rodeio','Eletrônica','RPG','Pop','Indie','Praia','Arte'];
+  function openMe(){openSheet(`<div class="mephoto" style="${me.photo?`background-image:url('${me.photo}')`:''}" onclick="document.getElementById('mefile').click()">${me.photo?'':'📷'}<div class="cam">＋</div></div><input type="file" id="mefile" accept="image/*" style="display:none" onchange="setMePhoto(this)"><div style="text-align:center;color:var(--mut);font-size:12px;margin-bottom:8px">Toque pra colocar sua foto (câmera ou galeria)</div>
+    <div class="stat-row" style="margin-top:0"><div class="stat"><b class="grad">1</b><small>eventos</small></div><div class="stat"><b class="grad">${connections.length}</b><small>conexões</small></div><div class="stat"><b class="grad">#4</b><small>ranking</small></div></div>
+    <div class="field"><label>Nome</label><input id="mName" value="${me.name}"></div><div style="display:flex;gap:10px"><div class="field" style="flex:1"><label>Idade</label><input id="mAge" value="${me.age}"></div><div class="field" style="flex:2"><label>Cidade/UF</label><input id="mCity" value="${me.city}"></div></div>
+    <div class="field"><label>Instagram</label><input id="mIg" value="${me.ig}"></div><div class="field"><label>Bio</label><textarea id="mBio" rows="2">${me.bio}</textarea></div>
+    <label style="font-size:12px;color:var(--mut)">Procurando</label><div style="margin:8px 0 14px">${['Amizade','Paquera','Curtir'].map(o=>`<span class="opt ${me.look===o?'sel':''}" onclick="[...this.parentNode.children].forEach(c=>c.classList.remove('sel'));this.classList.add('sel');me.look='${o}'">${o}</span>`).join('')}</div>
+    <label style="font-size:12px;color:var(--mut)">Seus interesses (a IA usa pro match)</label><div class="tags" id="meTags" style="margin:8px 0 14px">${allTags.map(t=>`<span class="tag ${me.tags.includes(t)?'sel':''}" onclick="this.classList.toggle('sel')">${t}</span>`).join('')}</div>
+    <div class="safecard"><div class="l"><b>👁️ Aparecer pros outros</b><div class="toggle ${me.visible?'on':''}" onclick="this.classList.toggle('on');me.visible=this.classList.contains('on');toast(me.visible?'Perfil visível':'Invisível 👻')"></div></div><p>Se desligar, ninguém te vê na lista. Você continua vendo todos.</p></div>
+    <button class="btn" onclick="saveMe()">Salvar perfil</button><button class="btn alt" style="margin-top:10px" onclick="iaProfile()">🤖 Montar meu perfil com a IA</button>
+    <div class="kick" style="display:block;margin-top:20px">Pulseira & Segurança 🛡️</div>
+    <div class="safecard click" onclick="toast('🔗 Encoste a pulseira no telefone pra parear...');setTimeout(()=>toast('✅ Pulseira pareada ao seu perfil!'),1400)"><div class="l"><b>⌚ Parear minha pulseira</b><span style="color:var(--cy);font-size:12px">tocar ›</span></div><p>Encoste sua pulseira no celular pra vincular ao seu perfil (ID único).</p></div>
+    <button class="btn danger" onclick="panic()">🚨 Botão de pânico</button>
+    <div class="safecard" style="margin-top:13px"><div class="l"><b>👨‍👩‍👧 Modo responsável</b><div class="toggle on" onclick="this.classList.toggle('on')"></div></div><p>Avisa o responsável por WhatsApp a cada zona e consumo. Conexões nunca avisadas.</p><div class="field" style="margin:10px 0 0"><label>WhatsApp do responsável (recebe os alertas)</label><input id="respZap" value="${me.respZap}" placeholder="(11) 9 0000-0000"></div></div>`)}
+  function setMePhoto(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{me.photo=e.target.result;const mp=document.querySelector('.mephoto');mp.style.backgroundImage=`url('${me.photo}')`;mp.firstChild.textContent='';renderMeAv();toast('Foto adicionada 📸')};r.readAsDataURL(f)}
+  function saveMe(){me.name=document.getElementById('mName').value||'Você';me.age=document.getElementById('mAge').value;me.city=document.getElementById('mCity').value;me.ig=document.getElementById('mIg').value;me.bio=document.getElementById('mBio').value;me.respZap=document.getElementById('respZap').value;me.tags=[...document.querySelectorAll('#meTags .tag.sel')].map(t=>t.textContent);renderMeAv();closeSheet();toast('Perfil salvo ✅')}
+  function iaProfile(){openSheet(`<h2 style="font-size:19px">🤖 Montar perfil com IA</h2><p class="sub">Responde rapidinho.</p><div class="q"><b>Bebida favorita?</b><div><span class="opt" onclick="pick(this)">Gin</span><span class="opt" onclick="pick(this)">Cerveja</span><span class="opt" onclick="pick(this)">Caipirinha</span></div></div><div class="q"><b>Estilo de música?</b><div><span class="opt" onclick="pick(this)">Sertanejo</span><span class="opt" onclick="pick(this)">Eletrônica</span><span class="opt" onclick="pick(this)">Rock</span><span class="opt" onclick="pick(this)">Pop</span></div></div><div class="q"><b>Procurando?</b><div><span class="opt" onclick="pick(this)">Amizade</span><span class="opt" onclick="pick(this)">Paquera</span><span class="opt" onclick="pick(this)">Curtir</span></div></div><button class="btn" onclick="iaDone()">✨ Gerar</button>`)}
+  function pick(el){[...el.parentNode.children].forEach(c=>c.classList.remove('sel'));el.classList.add('sel')}
+  function iaDone(){const picks=[...document.querySelectorAll('#sheet .opt.sel')].map(o=>o.textContent);if(picks.length<2){toast('Responde tudo 🙂');return}const mus=picks.find(p=>['Sertanejo','Eletrônica','Rock','Pop'].includes(p));if(mus&&!me.tags.includes(mus))me.tags.push(mus);const lk=picks.find(p=>['Amizade','Paquera','Curtir'].includes(p));if(lk)me.look=lk;closeSheet();toast('🤖 Perfil montado!')}
+  function panic(){openSheet(`<h2 style="font-size:19px;color:#ff6b6b">🚨 Acionar pânico?</h2><p class="sub">A monitora será chamada na sua última zona.</p><button class="btn danger" onclick="closeSheet();toast('Monitora a caminho 🚨')">Sim, preciso de ajuda</button><button class="btn alt" style="margin-top:10px" onclick="closeSheet()">Cancelar</button>`)}
+
+  renderMeAv();renderEvents();renderConf();renderFeed();renderStore();renderItems();renderQueue();renderConnCount();renderKcal();
+</script>
+</body>
+</html>
